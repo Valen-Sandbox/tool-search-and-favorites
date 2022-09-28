@@ -38,7 +38,7 @@ hook.Add("PostReloadToolsMenu", "ToolSearch", function()
 			local txt = "Search Tool..."
 			local txtW, txtH = surface.GetTextSize(txt)
 			surface.SetTextPos(3, h * 0.5 - txtH * 0.5 + 1)
-			surface.SetTextColor(Color(0, 0, 0, 192))
+			surface.SetTextColor(self:GetPlaceholderColor())
 			surface.DrawText(txt)
 		end
 

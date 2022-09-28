@@ -1,4 +1,3 @@
-
 local cl_toolsearch_autoselect = CreateClientConVar("cl_toolsearch_autoselect", "1")
 local cl_toolsearch_favoritesonly = CreateClientConVar("cl_toolsearch_favoritesonly", "0")
 local cl_toolsearch_favoritestyle = CreateClientConVar("cl_toolsearch_favoritestyle", "1")
@@ -35,7 +34,7 @@ hook.Add("PostReloadToolsMenu", "ToolSearch", function()
 
 		if self:GetValue() == "" then
 			surface.SetFont("DermaDefault")
-			local txt = "Search Tool..."
+			local txt = "Quick Filter..."
 			local txtW, txtH = surface.GetTextSize(txt)
 			surface.SetTextPos(3, h * 0.5 - txtH * 0.5 + 1)
 			surface.SetTextColor(self:GetPlaceholderColor())
@@ -208,4 +207,3 @@ hook.Add("PopulateToolMenu", "ToolSearch", function()
 end)
 
 -- RunConsoleCommand("spawnmenu_reload")
-

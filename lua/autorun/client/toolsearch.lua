@@ -109,6 +109,7 @@ hook.Add("PostReloadToolsMenu", "ToolSearch", function()
 	check:SetChecked(showFavsOnly)
 	check:SetText("Show Favorites Only")
 	check:SetPos(0, 3)
+	check:SetBright(true)
 
 	local star = Material("icon16/star.png")
 	local small_star = Material("icon16/bullet_star.png")

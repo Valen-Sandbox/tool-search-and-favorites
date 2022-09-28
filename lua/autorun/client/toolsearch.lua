@@ -1,6 +1,10 @@
 local cl_toolsearch_autoselect = CreateClientConVar("cl_toolsearch_autoselect", "1")
 local cl_toolsearch_favoritesonly = CreateClientConVar("cl_toolsearch_favoritesonly", "0")
 local cl_toolsearch_favoritestyle = CreateClientConVar("cl_toolsearch_favoritestyle", "1")
+local cl_toolsearch_favoritecolor_r = CreateClientConVar("cl_toolsearch_favoritecolor_r", "255")
+local cl_toolsearch_favoritecolor_g = CreateClientConVar("cl_toolsearch_favoritecolor_g", "235")
+local cl_toolsearch_favoritecolor_b = CreateClientConVar("cl_toolsearch_favoritecolor_b", "0")
+local cl_toolsearch_favoritecolor_a = CreateClientConVar("cl_toolsearch_favoritecolor_a", "164")
 
 local favorites = util.JSONToTable(file.Read("tools_favorites.txt", "DATA") or "{}") or {}
 local init = false
@@ -127,15 +131,19 @@ hook.Add("PostReloadToolsMenu", "ToolSearch", function()
 						pnl._Paint = pnl.Paint
 						function pnl:Paint(w, h)
 							local ret = self:_Paint(w, h)
+							local color_r = cl_toolsearch_favoritecolor_r:GetInt()
+							local color_g = cl_toolsearch_favoritecolor_g:GetInt()
+							local color_b = cl_toolsearch_favoritecolor_b:GetInt()
+							local color_a = cl_toolsearch_favoritecolor_a:GetInt()
 
 							if self.Favorite then
 								local way = cl_toolsearch_favoritestyle:GetInt()
 								if way == 2 or way == 3 then
 									surface.SetMaterial(way == 3 and small_star or star)
-									surface.SetDrawColor(Color(255, 255, 255))
+									surface.SetDrawColor(Color(color_r, color_g, color_b, color_a))
 									surface.DrawTexturedRect(w - 16, h * 0.5 - 8, 16, 16)
 								elseif way == 1 then
-									surface.SetDrawColor(Color(255, 235, 0, 164))
+									surface.SetDrawColor(Color(color_r, color_g, color_b, color_a))
 									surface.DrawRect(0, 0, w, h)
 								end
 							end
@@ -202,6 +210,14 @@ hook.Add("PopulateToolMenu", "ToolSearch", function()
 				},
 				Label = "Favorite Tool Style"
 			})
+
+			pnl:AddControl("Color", {
+            	Label = "Favorite Tool Color",
+            	Red = "cl_toolsearch_favoritecolor_r",
+            	Green = "cl_toolsearch_favoritecolor_g",
+            	Blue = "cl_toolsearch_favoritecolor_b",
+            	Alpha = "cl_toolsearch_favoritecolor_a",
+            })
 		end
 	)
 end)

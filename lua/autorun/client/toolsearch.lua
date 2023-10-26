@@ -31,7 +31,7 @@ hook.Add("PostReloadToolsMenu", "ToolSearch", function()
 
 	local search = textEntry:Add("DTextEntry")
 	search:Dock(FILL)
-	search:DockMargin(0, 0, 2, 0)
+	search:DockMargin(0, 0, 0, 0)
 	search._Paint = search.Paint
 	function search:Paint(w, h)
 		local ret = self:_Paint(w, h)
@@ -39,7 +39,7 @@ hook.Add("PostReloadToolsMenu", "ToolSearch", function()
 		if self:GetValue() == "" then
 			surface.SetFont("DermaDefault")
 			local txt = "Quick Filter..."
-			local txtW, txtH = surface.GetTextSize(txt)
+			local _, txtH = surface.GetTextSize(txt)
 			surface.SetTextPos(3, h * 0.5 - txtH * 0.5 + 1)
 			surface.SetTextColor(self:GetPlaceholderColor())
 			surface.DrawText(txt)
@@ -52,7 +52,7 @@ hook.Add("PostReloadToolsMenu", "ToolSearch", function()
 		local i = 0
 		for _, cat in next, list.pnlCanvas:GetChildren() do
 			local hidden = 0
-			for k, pnl in next, cat:GetChildren() do
+			for _, pnl in next, cat:GetChildren() do
 				if pnl.ClassName ~= "DCategoryHeader" then
 					if language.GetPhrase(pnl:GetText()):lower():match(str:lower()) and (not cl_toolsearch_favoritesonly:GetBool() or (cl_toolsearch_favoritesonly:GetBool() and favorites[pnl.Name])) then
 						pnl:SetVisible(true)
@@ -81,23 +81,6 @@ hook.Add("PostReloadToolsMenu", "ToolSearch", function()
 		end
 	end
 
-	local clear = textEntry:Add("DButton")
-	clear:Dock(RIGHT)
-	clear:SetWide(20)
-	clear:SetText("")
-	clear:SetTooltip("Press to clear")
-	function clear:DoClick()
-		search:SetValue("")
-	end
-	local close = Material("icon16/cross.png")
-	function clear:Paint(w, h)
-		derma.SkinHook("Paint", "Button", self, w, h)
-
-		surface.SetMaterial(close)
-		surface.SetDrawColor(Color(255, 255, 255))
-		surface.DrawTexturedRect(w * 0.5 - 16 * 0.5, h * 0.5 - 16 * 0.5, 16, 16)
-	end
-
 	local favsOnly = panel:Add("EditablePanel")
 	favsOnly:Dock(TOP)
 	favsOnly:DockMargin(0, 0, 0, 2)
@@ -115,7 +98,7 @@ hook.Add("PostReloadToolsMenu", "ToolSearch", function()
 	local small_star = Material("icon16/bullet_star.png")
 	local function showFavoritesOnly(showFavs)
 		for _, cat in next, list.pnlCanvas:GetChildren() do
-			for k, pnl in next, cat:GetChildren() do
+			for _, pnl in next, cat:GetChildren() do
 				if pnl.ClassName ~= "DCategoryHeader" then
 					if showFavs then
 						if favorites[pnl.Name] then
@@ -212,12 +195,12 @@ hook.Add("PopulateToolMenu", "ToolSearch", function()
 			})
 
 			pnl:AddControl("Color", {
-            	Label = "Favorite Tool Color",
-            	Red = "cl_toolsearch_favoritecolor_r",
-            	Green = "cl_toolsearch_favoritecolor_g",
-            	Blue = "cl_toolsearch_favoritecolor_b",
-            	Alpha = "cl_toolsearch_favoritecolor_a",
-            })
+				Label = "Favorite Tool Color",
+				Red = "cl_toolsearch_favoritecolor_r",
+				Green = "cl_toolsearch_favoritecolor_g",
+				Blue = "cl_toolsearch_favoritecolor_b",
+				Alpha = "cl_toolsearch_favoritecolor_a",
+			})
 		end
 	)
 end)

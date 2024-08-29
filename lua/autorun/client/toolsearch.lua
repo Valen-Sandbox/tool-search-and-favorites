@@ -50,11 +50,15 @@ hook.Add("PostReloadToolsMenu", "ToolSearch", function()
 	search:SetUpdateOnType(true)
 	function search:OnValueChange(str, init)
 		local i = 0
+		local favoritesOnly = cl_toolsearch_favoritesonly:GetBool()
+		local searchText = string.PatternSafe(str:lower())
+
 		for _, cat in next, list.pnlCanvas:GetChildren() do
 			local hidden = 0
 			for _, pnl in next, cat:GetChildren() do
 				if pnl.ClassName ~= "DCategoryHeader" then
-					if language.GetPhrase(pnl:GetText()):lower():match(str:lower()) and (not cl_toolsearch_favoritesonly:GetBool() or (cl_toolsearch_favoritesonly:GetBool() and favorites[pnl.Name])) then
+					local pnlText = language.GetPhrase(pnl:GetText()):lower()
+					if pnlText:match(searchText) and (not favoritesOnly or (favoritesOnly and favorites[pnl.Name])) then
 						pnl:SetVisible(true)
 						if cl_toolsearch_autoselect:GetBool() and not init then
 							i = i + 1
@@ -134,7 +138,7 @@ hook.Add("PostReloadToolsMenu", "ToolSearch", function()
 							return ret
 						end
 					end
-					function pnl:DoRightClick(w, h)
+					function pnl:DoRightClick()
 						self.Favorite = not self.Favorite
 						favorites[self.Name] = self.Favorite
 						file.Write("tools_favorites.txt", util.TableToJSON(favorites))
